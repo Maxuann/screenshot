@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="js/html2canvas.js"></script>
+    <title>Document</title>
+    <style>
+        @font-face {
+            font-family: msyh;
+            src: url("../font/msyh.woff2") format("woff2");
+        }
+
+        body {
+            background-color: #000;
+        }
+
+        #app {
+            width: 1200px;
+            height: 554px;
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .bg {
+            width: 1200px;
+        }
+
+        .content {
+            width: 580px;
+            height: 259px;
+            position: absolute;
+            top: 169px;
+            left: 250px;
+            display: flex;
+        }
+
+        .active {
+            overflow: hidden;
+        }
+
+        .content .box {
+            position: relative;
+        }
+
+        .content .input {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .content div:nth-child(1) div input {
+            width: 156.3px;
+        }
+
+        .content div:nth-child(2) div input {
+            width: 168.4px;
+        }
+
+        .content div:nth-child(3) div input {
+            width: 119px;
+        }
+
+        .content div:nth-child(4) div input {
+            width: 119.1px;
+        }
+
+        .content div:nth-child(1) div p {
+            width: 160.3px;
+        }
+
+        .content div:nth-child(2) div p {
+            width: 172.4px;
+        }
+
+        .content div:nth-child(3) div p {
+            width: 123px;
+        }
+
+        .content div:nth-child(4) div p {
+            width: 123.1px;
+        }
+
+        input,
+        p {
+            height: 37.9px;
+            min-height: 37.9px;
+            border: none;
+            border-radius: 2px;
+            font-size: 16.3px;
+            outline: none;
+            background-color: transparent;
+            font-family: msyh;
+            letter-spacing: -0.2px;
+            text-align: center;
+        }
+
+        .input input {
+            color: transparent;
+            caret-color: #c1b89b;
+        }
+
+        p {
+            color: #c1b89b;
+            min-height: 39.9px;
+            margin: 0;
+            line-height: 38.5px;
+            user-select: none;
+        }
+
+        .page {
+            color: #a29a98;
+            position: absolute;
+            bottom: 82px;
+            left: 442px;
+            font-size: 15px;
+            text-align: left !important;
+        }
+
+        .generate {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+        }
+
+        .generate button {
+            width: 70px;
+            height: 25px;
+            font-size: 12px;
+        }
+
+        .screenshoot canvas {
+            width: 150px !important;
+            height: 69.3px !important;
+            margin: 10px;
+        }
+
+        .bank-switch {
+            width: 240px;
+            height: 80px;
+            position: absolute;
+            right: 0px;
+            top: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <img class="bg" :src='`img/${bg}.jpg`' alt="">
+        <div class="bank-switch" @click='bg >= 3 ? bg = 1 : bg++'></div>
+        <input class="page" type="text" value="每页20条 共1页">
+        <div class="content">
+            <div class="box">
+                <div class="text">
+                    <p>{{ time1 }}</p>
+                    <p>{{ time2 }}</p>
+                    <p>{{ time3 }}</p>
+                    <p>{{ time4 }}</p>
+                    <p>{{ time5 }}</p>
+                    <p>{{ time6 }}</p>
+                    <p>{{ time7 }}</p>
+                </div>
+                <div class="input">
+                    <input type="text" v-model='time1'>
+                    <input type="text" v-model='time2'>
+                    <input type="text" v-model='time3'>
+                    <input type="text" v-model='time4'>
+                    <input type="text" v-model='time5'>
+                    <input type="text" v-model='time6'>
+                    <input type="text" v-model='time7'>
+                </div>
+            </div>
+            <div class="box">
+                <div class="text">
+                    <p v-for='(item,index) in 7' key='index'>{{bank}}</p>
+                </div>
+                <div class="input">
+                    <input type="text" disabled>
+                    <input type="text" disabled>
+                    <input type="text" disabled>
+                    <input type="text" disabled>
+                    <input type="text" disabled>
+                    <input type="text" disabled>
+                    <input type="text" disabled>
+                </div>
+            </div>
+            <div class="box">
+                <div class="text">
+                    <p>{{amount1}}</p>
+                    <p>{{amount2}}</p>
+                    <p>{{amount3}}</p>
+                    <p>{{amount4}}</p>
+                    <p>{{amount5}}</p>
+                    <p>{{amount6}}</p>
+                    <p>{{amount7}}</p>
+                </div>
+                <div class="input">
+                    <input type="text" v-model='amount1'>
+                    <input type="text" v-model='amount2'>
+                    <input type="text" v-model='amount3'>
+                    <input type="text" v-model='amount4'>
+                    <input type="text" v-model='amount5'>
+                    <input type="text" v-model='amount6'>
+                    <input type="text" v-model='amount7'>
+                </div>
+            </div>
+            <div class="box">
+                <div class="text">
+                    <p v-for='(state,index) in 7' key='index'>提款成功</p>
+                </div>
+                <div class="input">
+                    <input type="text" disabled>
+                    <input type="text" disabled>
+                    <input type="text" disabled>
+                    <input type="text" disabled>
+                    <input type="text" disabled>
+                    <input type="text" disabled>
+                    <input type="text" disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="generate">
+        <button id="btn" onclick="takeScreenshot()">保存截图</button>
+        <div class="screenshoot"></div>
+    </div>
+</body>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            time1: '2020-09-18 02:48',
+            time2: '2020-09-18',
+            time3: '2020-09-18',
+            time4: '2020-09-18',
+            time5: '2020-09-18',
+            time6: '2020-09-18',
+            time7: '2020-09-18',
+            amount1: 0,
+            amount2: 0,
+            amount3: 0,
+            amount4: 0,
+            amount5: 0,
+            amount6: 0,
+            amount7: 0,
+            state: '提款成功',
+            bg: 1
+        },
+        computed: {
+            bank: function () {
+                const bank = ['工商银行', '建设银行', '浦发银行'];
+                return bank[this.bg - 1]
+            }
+        }
+    })
+</script>
+<script type="text/javascript">
+    function takeScreenshot() {
+        document.querySelector(".content").classList.add('active');
+        html2canvas(document.querySelector("#app")).then(canvas => {
+            document.querySelector(".screenshoot").appendChild(canvas);
+        });
+        document.querySelector(".content").classList.remove('active');
+    }
+</script>
+
+</html>
